@@ -1,50 +1,29 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
-import { render } from '@testing-library/react'
+import { render, fireEvent } from '@testing-library/react'
 import '@testing-library/react/cleanup-after-each'
-import Dashboard from './Dashboard'
-import Display from './Display'
+
 import App from './App'
 
-// describe('<App />', () => {
-//   it('renders without crashing using ReactDOM', () => {
-//     const div = document.createElement('div')
-//     ReactDOM.render(<App />, div)
-//     ReactDOM.unmountComponentAtNode(div)
-//   })
-// })
-
-// describe('Dashboard.js', () => {
-//   describe('balls', () => {
-//     it('should increment balls thrown', () => {})
-//     it('should reset when a player reaches 4 balls', () => {})
-//     it('should reset when a hit is recorded', () => {})
-//   })
-//   describe('strikes', () => {
-//     it('should reset when a player reaches 3 strikes', () => {})
-//   })
-//   describe('hits', () => {
-//     it('should reset when a player reaches 3 strikes', () => {})
-//   })
-// })
-
-describe('<Display />', () => {
-  it('renders list of current stats provided on props', () => {
-    const batterData = { id: 1, name: 'Mr. Baseball Guy', balls: 2, strikes: 0, fouls: 0, hits: 0 }
-
-    const component = render(<Display stats={batterData} />)
-    const balls = component.getAllByTestId('balls')
-    expect(balls)
-  })
-  // it('should render balls', () => {})
-  // it('should render strikes', () => {
-  //   const comp = render(<Display />)
-  // })
-})
-
-describe('<Dashboard />', () => {
+describe('<App />', () => {
   it('renders without crashing', () => {
-    render(<Dashboard />)
+    render(<App />)
+  })
+
+  it('should reset stats if strikes is clicked 3 times', () => {
+    const { getByText } = render(<App />)
+    const strike = getByText(/^strike$/i)
+    fireEvent.click(strike)
+    fireEvent.click(strike)
+    fireEvent.click(strike)
+    getByText(/Strikes: 0/i)
+  })
+
+  it('should reset stats if balls is clicked 4 times', () => {
+    const { getByText } = render(<App />)
+    const ball = getByText(/^ball$/i)
+    fireEvent.click(ball)
+    fireEvent.click(ball)
+    fireEvent.click(ball)
+    getByText(/balls: 0/i)
   })
 })
-

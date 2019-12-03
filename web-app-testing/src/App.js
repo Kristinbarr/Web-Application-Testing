@@ -7,7 +7,6 @@ function App() {
   const [balls, setBalls] = useState(0)
   const [strikes, setStrikes] = useState(0)
   const [fouls, setFouls] = useState(0)
-  const [hits, setHits] = useState(0)
 
   const increment = (e) => {
     e.preventDefault()
@@ -26,23 +25,24 @@ function App() {
         }
         break
       case 'HIT':
-        setHits(hits + 1)
+        setBalls(0)
+        setStrikes(0)
+        setFouls(0)
         break
       default:
         break
     }
 
-    if (balls === 4 || strikes === 3 || hits === 1) {
+    if (balls === 4 || strikes === 3) {
       setBalls(0)
       setStrikes(0)
     }
-
   }
 
   return (
     <div className='App'>
       <h1>SPORTS TEAM</h1>
-      <Display balls={balls} strikes={strikes} fouls={fouls} hits={hits} />
+      <Display balls={balls} strikes={strikes} />
       <Dashboard increment={increment} />
     </div>
   )
